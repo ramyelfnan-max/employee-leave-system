@@ -321,6 +321,175 @@
             background: rgba(255, 68, 68, 0.3);
         }
 
+        /* تحسينات شاشة الدخول الجديدة */
+        .remember-me-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .remember-me-checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--neon-blue);
+            cursor: pointer;
+        }
+
+        .forgot-password-link {
+            color: var(--neon-blue);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .forgot-password-link:hover {
+            color: var(--neon-green);
+            text-shadow: 0 0 5px var(--neon-green);
+        }
+
+        /* النوافذ المنبثقة */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-800) 100%);
+            border: 2px solid var(--neon-blue);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            color: var(--neon-blue);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .modal-message {
+            color: white;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .modal-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .modal-btn.funny {
+            background: linear-gradient(45deg, var(--neon-yellow), #ff9800);
+            color: var(--primary-900);
+            font-weight: bold;
+        }
+
+        .modal-btn.funny:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 235, 59, 0.4);
+        }
+
+        .modal-btn.primary {
+            background: linear-gradient(45deg, var(--neon-blue), var(--primary-600));
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+        }
+
+        /* الرسائل الموسمية */
+        .seasonal-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary-900) 0%, var(--primary-800) 100%);
+            border: 2px solid var(--neon-green);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            color: white;
+            font-size: 1rem;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            z-index: 999;
+            transform: translateX(100%);
+            transition: all 0.5s ease;
+            max-width: 350px;
+        }
+
+        .seasonal-message.show {
+            transform: translateX(0);
+        }
+
+        .seasonal-message .close-btn {
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            background: none;
+            border: none;
+            color: var(--neon-red);
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* عداد النسيان */
+        .forget-counter {
+            background: rgba(255, 235, 59, 0.1);
+            border: 1px solid rgba(255, 235, 59, 0.3);
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--neon-yellow);
+            text-align: center;
+        }
+
         /* استجابة للشاشات المختلفة */
         @media (max-width: 1200px) {
             #balancesContent {
@@ -502,14 +671,25 @@
             
             <form id="loginForm">
                 <div class="form-group">
-                    <label class="form-label">البريد الإلكتروني</label>
-                    <input type="email" id="loginEmail" class="input-neon" required value="admin@company.com">
+                    <label class="form-label">اسم المستخدم أو البريد الإلكتروني</label>
+                    <input type="text" id="loginEmail" class="input-neon" required value="admin" placeholder="أدخل اسم المستخدم أو البريد الإلكتروني">
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">كلمة المرور</label>
-                    <input type="password" id="loginPassword" class="input-neon" required value="admin123">
+                    <input type="password" id="loginPassword" class="input-neon" required value="admin123" placeholder="أدخل كلمة المرور">
                 </div>
+                
+                <!-- مربع تذكرني -->
+                <div class="remember-me-container">
+                    <input type="checkbox" id="rememberMe" class="remember-me-checkbox">
+                    <label for="rememberMe" style="color: var(--primary-200); cursor: pointer;">تذكرني</label>
+                    <div style="flex: 1;"></div>
+                    <a href="#" id="forgotPasswordLink" class="forgot-password-link">نسيت كلمة المرور؟</a>
+                </div>
+                
+                <!-- عداد النسيان -->
+                <div id="forgetCounter" class="forget-counter hidden"></div>
                 
                 <button type="submit" id="loginBtn" class="btn-neon" style="width: 100%;">
                     <span id="loginBtnText">تسجيل الدخول</span>
@@ -519,11 +699,30 @@
             
             <div class="mt-4 text-center text-sm text-gray">
                 <p>حسابات تجريبية:</p>
-                <p>مدير: admin@company.com / admin123</p>
-                <p>مشرف: supervisor@company.com / super123</p>
-                <p>موظف: employee@company.com / emp123</p>
+                <p>مدير: admin أو admin@company.com / admin123</p>
+                <p>مشرف: supervisor أو supervisor@company.com / super123</p>
+                <p>موظف: employee أو employee@company.com / emp123</p>
+                <p style="margin-top: 0.5rem; color: var(--neon-blue);">💡 يمكنك استخدام اسم المستخدم أو البريد الإلكتروني</p>
             </div>
         </div>
+    </div>
+
+    <!-- النافذة المنبثقة لنسيان كلمة المرور -->
+    <div id="forgotPasswordModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2 class="modal-title">🤦‍♂️ أوووووبس!</h2>
+            <div id="forgotPasswordMessage" class="modal-message"></div>
+            <div class="modal-buttons">
+                <button class="modal-btn funny" onclick="closeForgotPasswordModal()">😂 هههههه</button>
+                <button class="modal-btn primary" onclick="resetPassword()">يلا بينا نغير كلمة المرور! 🔐</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- الرسالة الموسمية -->
+    <div id="seasonalMessage" class="seasonal-message">
+        <button class="close-btn" onclick="closeSeasonalMessage()">×</button>
+        <div id="seasonalMessageContent"></div>
     </div>
 
     <!-- الشاشة الرئيسية -->
@@ -1300,6 +1499,200 @@
         let currentUser = null;
         let employees = [];
         let leaveRecords = [];
+
+        // متغيرات التحسينات الجديدة
+        let forgetPasswordCount = parseInt(localStorage.getItem('forgetPasswordCount') || '0');
+        
+        // رسائل نسيان كلمة المرور الكوميدية
+        const forgotPasswordMessages = [
+            {
+                emoji: "😠",
+                text: "نسيت تاكل! نسيت تشرب! نسيت تغتت على زمايلك!"
+            },
+            {
+                emoji: "🤔", 
+                text: "الذاكرة مليانة! .. امسح شوية من ذكرياتك القديمة"
+            },
+            {
+                emoji: "😂",
+                text: "ما سيادتك لو مركز .. ماكنتش نسيت كلمة المرور"
+            }
+        ];
+
+        // الرسائل الموسمية
+        const seasonalMessages = {
+            // رأس السنة الميلادية (ديسمبر/يناير)
+            newYear: [
+                "🎉 كل سنة وإنت طيب! سنة جديدة سعيدة مليانة إجازات!",
+                "🥳 Happy New Year! يلا نبدأ السنة بحماس وشغل كتير!",
+                "✨ سنة جديدة = فرص جديدة = إجازات جديدة!"
+            ],
+            // رمضان الكريم
+            ramadan: [
+                "🌙 رمضان كريم! شهر الخير والبركة والإجازات القصيرة 😅",
+                "🕌 كل سنة وإنت طيب! رمضان مبارك عليك وعلى الأسرة",
+                "⭐ اللهم بلغنا رمضان... وبلغنا إجازة العيد كمان!"
+            ],
+            // عيد الفطر/الأضحى
+            eid: [
+                "🎆 عيد مبارك! كل سنة وإنت طيب وإجازة سعيدة!",
+                "🐑 عيد أضحى مبارك! يارب تكون الإجازة حلوة",
+                "🎊 عيد سعيد! استمتع بالإجازة ومتنساش ترجع للشغل 😂"
+            ],
+            // الصيف
+            summer: [
+                "☀️ الصيف وصل! وقت الإجازات والبحر والاستجمام",
+                "🏖️ صيف حار = إجازات كتير! استمتع بالوقت",
+                "🌊 الصيف فرصة للراحة... بس متنساش الشغل برضو!"
+            ],
+            // الشتاء
+            winter: [
+                "❄️ الشتا وصل! وقت الشاي والشغل الدافي",
+                "☕ الجو بارد والقلب دافي! صباح الخير",
+                "🧥 البس تقيل وادخل الشغل بحماس!"
+            ],
+            // عيد الحب
+            valentine: [
+                "💝 عيد الحب سعيد! حب شغلك زي ما بتحب حبيبك",
+                "❤️ Happy Valentine's! الحب في الهوا والشغل في الإيد",
+                "💕 عيد حب سعيد! متنساش تحب شغلك كمان"
+            ]
+        };
+
+        // وظائف التحسينات الجديدة
+        
+        // عرض الرسالة الموسمية
+        function showSeasonalMessage() {
+            const now = new Date();
+            const month = now.getMonth() + 1; // 1-12
+            const day = now.getDate();
+            
+            let messageType = null;
+            
+            // تحديد نوع الرسالة حسب التاريخ
+            if ((month === 12 && day >= 25) || (month === 1 && day <= 7)) {
+                messageType = 'newYear';
+            } else if (month === 6 || month === 7 || month === 8) {
+                messageType = 'summer';
+            } else if (month === 12 || month === 1 || month === 2) {
+                messageType = 'winter';
+            } else if (month === 2 && day === 14) {
+                messageType = 'valentine';
+            }
+            
+            // عرض الرسالة إذا وجدت
+            if (messageType && seasonalMessages[messageType]) {
+                const messages = seasonalMessages[messageType];
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                
+                const messageElement = document.getElementById('seasonalMessage');
+                const contentElement = document.getElementById('seasonalMessageContent');
+                
+                contentElement.textContent = randomMessage;
+                messageElement.classList.add('show');
+                
+                // إخفاء الرسالة تلقائياً بعد 5 ثوان
+                setTimeout(() => {
+                    messageElement.classList.remove('show');
+                }, 5000);
+            }
+        }
+
+        // إغلاق الرسالة الموسمية
+        function closeSeasonalMessage() {
+            document.getElementById('seasonalMessage').classList.remove('show');
+        }
+
+        // عرض نافذة نسيان كل��ة المرور
+        function showForgotPasswordModal() {
+            // زيادة العداد
+            forgetPasswordCount++;
+            localStorage.setItem('forgetPasswordCount', forgetPasswordCount.toString());
+            
+            // اختيار رسالة عشوائية
+            const randomMessage = forgotPasswordMessages[Math.floor(Math.random() * forgotPasswordMessages.length)];
+            
+            // تحديث محتوى النافذة
+            const messageElement = document.getElementById('forgotPasswordMessage');
+            messageElement.innerHTML = `
+                <div style="font-size: 3rem; margin-bottom: 1rem;">${randomMessage.emoji}</div>
+                <div>${randomMessage.text}</div>
+            `;
+            
+            // عرض النافذة
+            document.getElementById('forgotPasswordModal').classList.add('show');
+            
+            // تحديث عداد النسيان
+            updateForgetCounter();
+        }
+
+        // إغلاق نافذة نسيان كلمة المرور
+        function closeForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').classList.remove('show');
+        }
+
+        // تحديث عداد النسيان
+        function updateForgetCounter() {
+            const counterElement = document.getElementById('forgetCounter');
+            
+            if (forgetPasswordCount > 0) {
+                let message = '';
+                
+                if (forgetPasswordCount === 1) {
+                    message = "🤔 أول مرة تنسى؟ عادي يحصل";
+                } else if (forgetPasswordCount <= 3) {
+                    message = `😅 المرة رقم ${forgetPasswordCount}! الذاكرة محتاجة فيتامين!`;
+                } else if (forgetPasswordCount <= 5) {
+                    message = `🤦‍♂️ المرة دي رقم ${forgetPasswordCount}! إنت محتاج مفكرة`;
+                } else if (forgetPasswordCount <= 10) {
+                    message = `😂 ${forgetPasswordCount} مرات! إنت بطل النسيان الرسمي`;
+                } else {
+                    message = `🏆 مبروك! إنت وصلت لمستوى الخبير في النسيان (${forgetPasswordCount} مرة)`;
+                }
+                
+                counterElement.textContent = message;
+                counterElement.classList.remove('hidden');
+            }
+        }
+
+        // إعادة تعيين كلمة المرور (وهمي حالياً)
+        function resetPassword() {
+            closeForgotPasswordModal();
+            
+            // عرض رسالة مؤقتة
+            showMessage('🔧 ميزة إعادة تعيين كلمة المرور قيد التطوير! تواصل مع المدير.', 'info');
+        }
+
+        // حفظ واستعادة بيانات الدخول
+        function saveLoginData() {
+            if (document.getElementById('rememberMe').checked) {
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                
+                localStorage.setItem('rememberedEmail', email);
+                localStorage.setItem('rememberedPassword', btoa(password)); // تشفير بسيط
+                localStorage.setItem('rememberMe', 'true');
+            } else {
+                localStorage.removeItem('rememberedEmail');
+                localStorage.removeItem('rememberedPassword');
+                localStorage.removeItem('rememberMe');
+            }
+        }
+
+        // استعادة بيانات الدخول المحفوظة
+        function loadSavedLoginData() {
+            if (localStorage.getItem('rememberMe') === 'true') {
+                const email = localStorage.getItem('rememberedEmail');
+                const password = localStorage.getItem('rememberedPassword');
+                
+                if (email) document.getElementById('loginEmail').value = email;
+                if (password) document.getElementById('loginPassword').value = atob(password); // فك التشفير
+                document.getElementById('rememberMe').checked = true;
+            }
+            
+            // تحديث عداد النسيان
+            updateForgetCounter();
+        }
         let saturdayShifts = [];
         let currentAttendance = []; // الحاضرين حالياً
         let selectedLeaveType = 'regular';
@@ -1762,6 +2155,16 @@
             'employee@company.com': { password: 'emp123', role: 'موظف تجريبي' }
         };
 
+        // أسماء المستخدمين البديلة
+        const usernames = {
+            'admin': { email: 'admin@company.com', password: 'admin123', role: 'المدير العام' },
+            'supervisor': { email: 'supervisor@company.com', password: 'super123', role: 'المشرف الأول' },
+            'employee': { email: 'employee@company.com', password: 'emp123', role: 'موظف تجريبي' },
+            'مدير': { email: 'admin@company.com', password: 'admin123', role: 'المدير العام' },
+            'مشرف': { email: 'supervisor@company.com', password: 'super123', role: 'المشرف الأول' },
+            'موظف': { email: 'employee@company.com', password: 'emp123', role: 'موظف تجريبي' }
+        };
+
         // بدء التطبيق
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM Content Loaded');
@@ -1784,6 +2187,14 @@
                 lucide.createIcons();
                 console.log('✅ Icon system initialized');
                 
+                // تحميل بيانات الدخول المحفوظة
+                loadSavedLoginData();
+                console.log('✅ Saved login data loaded');
+                
+                // عرض الرسالة الموسمية
+                showSeasonalMessage();
+                console.log('✅ Seasonal message displayed');
+                
                 // إعداد الأحداث
                 setupEvents();
                 
@@ -1798,6 +2209,7 @@
                 // محاولة المتابعة بالحد الأدنى من الوظائف
                 console.log('🔄 Attempting minimal initialization...');
                 lucide.createIcons();
+                loadSavedLoginData();
                 setupEvents();
                 showLoginScreen();
             }
@@ -1856,6 +2268,35 @@
             } else {
                 console.error('Login form not found');
             }
+            
+            // رابط نسيان كلمة المرور
+            const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+            if (forgotPasswordLink) {
+                forgotPasswordLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showForgotPasswordModal();
+                });
+                console.log('Forgot password link event listener added');
+            }
+            
+            // حفظ بيانات الدخول عند التغيير
+            const rememberMeCheckbox = document.getElementById('rememberMe');
+            if (rememberMeCheckbox) {
+                rememberMeCheckbox.addEventListener('change', function() {
+                    if (!this.checked) {
+                        localStorage.removeItem('rememberedEmail');
+                        localStorage.removeItem('rememberedPassword');
+                        localStorage.removeItem('rememberMe');
+                    }
+                });
+            }
+            
+            // إغلاق النوافذ المنبثقة بالضغط خارجها
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal-overlay')) {
+                    e.target.classList.remove('show');
+                }
+            });
             
             // تسجيل الخروج
             const logoutBtn = document.getElementById('logoutBtn');
@@ -4546,7 +4987,20 @@
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             
-            console.log('Attempting login with:', email);
+            // التحقق من اسم المستخدم أو البريد الإلكتروني
+            let actualEmail = email;
+            let userAccount = null;
+            
+            // إذا كان المدخل اسم مستخدم وليس بريد إلكتروني
+            if (!email.includes('@') && usernames[email.toLowerCase()]) {
+                const userData = usernames[email.toLowerCase()];
+                actualEmail = userData.email;
+                userAccount = userData;
+            } else if (testAccounts[email]) {
+                userAccount = testAccounts[email];
+            }
+            
+            console.log('Attempting login with:', actualEmail);
             
             // إظهار التحميل
             const loginBtn = document.getElementById('loginBtn');
@@ -4566,27 +5020,30 @@
                 if (typeof firebase !== 'undefined' && auth) {
                     // محاولة تسجيل الدخول عبر Firebase
                     console.log('Attempting Firebase login...');
-                    const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                    const userCredential = await auth.signInWithEmailAndPassword(actualEmail, password);
                     console.log('Firebase login successful:', userCredential.user.email);
                     currentUser = {
                         email: userCredential.user.email,
-                        role: testAccounts[email]?.role || 'مستخدم'
+                        role: userAccount?.role || testAccounts[actualEmail]?.role || 'مستخدم'
                     };
                 } else {
                     // تسجيل دخول محلي للاختبار
                     console.log('Using local authentication...');
-                    if (testAccounts[email] && testAccounts[email].password === password) {
+                    if (userAccount && userAccount.password === password) {
                         currentUser = {
-                            email: email,
-                            role: testAccounts[email].role
+                            email: actualEmail,
+                            role: userAccount.role
                         };
                         console.log('Local login successful');
                     } else {
-                        throw new Error('البريد الإلكتروني أو كلمة المرور غير صحيحة');
+                        throw new Error('اسم المستخدم أو كلمة المرور غير صحيحة');
                     }
                 }
                 
                 showNotification('loginNotification', 'تم تسجيل الدخول بنجاح!', 'success');
+                
+                // حفظ بيانات الدخول إذا كان مربع "تذكرني" محدد
+                saveLoginData();
                 
                 setTimeout(() => {
                     showMainScreen();

@@ -453,13 +453,17 @@
             font-size: 1rem;
             box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
             z-index: 999;
-            transform: translateX(100%);
+            transform: translateX(120%);
             transition: all 0.5s ease;
             max-width: 350px;
+            opacity: 0;
+            visibility: hidden;
         }
 
         .seasonal-message.show {
             transform: translateX(0);
+            opacity: 1;
+            visibility: visible;
         }
 
         .seasonal-message .close-btn {
@@ -688,8 +692,7 @@
                     <a href="#" id="forgotPasswordLink" class="forgot-password-link">نسيت كلمة المرور؟</a>
                 </div>
                 
-                <!-- عداد النسيان -->
-                <div id="forgetCounter" class="forget-counter hidden"></div>
+                <!-- عداد النسيان - محذوف -->
                 
                 <button type="submit" id="loginBtn" class="btn-neon" style="width: 100%;">
                     <span id="loginBtnText">تسجيل الدخول</span>
@@ -823,11 +826,8 @@
                     <!-- تبويب الأرصدة -->
                     <div id="balancesTab" class="tab-panel">
                         <h2 style="color: var(--neon-blue); margin-bottom: 1.5rem; font-size: 1.5rem;">أرصدة الموظفين</h2>
-                        <div id="balancesContent" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; max-height: 70vh; overflow-y: auto;"></div>
-                            <div style="text-align: center; padding: 2rem; color: var(--primary-200);">
-                                <div class="loading"></div>
-                                <p style="margin-top: 1rem;">جاري تحميل البيانات...</p>
-                            </div>
+                        <div id="balancesContent" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; overflow-y: visible;">
+                            <!-- سيتم ملؤه ديناميكياً -->
                         </div>
                     </div>
 
@@ -1519,68 +1519,128 @@
             }
         ];
 
-        // الرسائل الموسمية
+        // الرسائل الموسمية الرسمية
         const seasonalMessages = {
-            // رأس السنة الميلادية (ديسمبر/يناير)
+            // رسائل يومية حسب الوقت
+            morning: [
+                "� صباسح الخير! نتمنى لك يوماً مثمراً ومليئاً بالإنجازات",
+                "☀️ صباح النور! بداية موفقة ليوم عمل جديد",
+                "🌞 أهلاً وسهلاً بك! صباح مبارك وعمل ممتع"
+            ],
+            afternoon: [
+                "🌤️ مساء الخير! نتمنى أن يكون يومك مثمراً",
+                "� مساء اكلنور! استمر في العمل الرائع",
+                "✨ مساء مبارك! شكراً لجهودك المتميزة"
+            ],
+            evening: [
+                "🌙 مساء الخير! وقت انتهاء يوم عمل ناجح",
+                "⭐ مساء النور! شكراً لعطائك اليوم",
+                "�  مساء مبارك! استرح جيداً لتستعد لغد أفضل"
+            ],
+            
+            // المناسبات والأعياد الرسمية المصرية
             newYear: [
-                "🎉 كل سنة وإنت طيب! سنة جديدة سعيدة مليانة إجازات!",
-                "🥳 Happy New Year! يلا نبدأ السنة بحماس وشغل كتير!",
-                "✨ سنة جديدة = فرص جديدة = إجازات جديدة!"
+                "🎊 كل عام وأنتم بخير! عام جديد مليء بالنجاح والتوفيق",
+                "✨ أعاده الله علينا وعليكم بالخير واليمن والبركات"
             ],
-            // رمضان الكريم
+            
             ramadan: [
-                "🌙 رمضان كريم! شهر الخير والبركة والإجازات القصيرة 😅",
-                "🕌 كل سنة وإنت طيب! رمضان مبارك عليك وعلى الأسرة",
-                "⭐ اللهم بلغنا رمضان... وبلغنا إجازة العيد كمان!"
+                "🌙 رمضان مبارك! كل عام وأنتم بخير وصحة وسلامة",
+                "🕌 أهلاً رمضان! شهر الخير والبركة والعمل الصالح"
             ],
-            // عيد الفطر/الأضحى
-            eid: [
-                "🎆 عيد مبارك! كل سنة وإنت طيب وإجازة سعيدة!",
-                "🐑 عيد أضحى مبارك! يارب تكون الإجازة حلوة",
-                "🎊 عيد سعيد! استمتع بالإجازة ومتنساش ترجع للشغل 😂"
+            
+            eidFitr: [
+                "🎆 عيد فطر مبارك! كل عام وأنتم بخير وسعادة",
+                "🌟 تقبل الله منا ومنكم! عيد سعيد على الجميع"
             ],
-            // الصيف
-            summer: [
-                "☀️ الصيف وصل! وقت الإجازات والبحر والاستجمام",
-                "🏖️ صيف حار = إجازات كتير! استمتع بالوقت",
-                "🌊 الصيف فرصة للراحة... بس متنساش الشغل برضو!"
+            
+            eidAdha: [
+                "�  عيد أضحى مبارك! كل عام وأنتم بخير وصحة",
+                "🎊 تقبل الله منا ومنكم صالح الأعمال! عيد سعيد"
             ],
-            // الشتاء
-            winter: [
-                "❄️ الشتا وصل! وقت الشاي والشغل الدافي",
-                "☕ الجو بارد والقلب دافي! صباح الخير",
-                "🧥 البس تقيل وادخل الشغل بحماس!"
+            
+            // المناسبات الوطنية المصرية
+            nationalDay: [
+                "🇪🇬 كل عام ومصر بخير! عيد وطني سعيد",
+                "🎖️ مبارك للوطن الغالي! كل عام ومصر أقوى وأعز"
             ],
-            // عيد الحب
-            valentine: [
-                "💝 عيد الحب سعيد! حب شغلك زي ما بتحب حبيبك",
-                "❤️ Happy Valentine's! الحب في الهوا والشغل في الإيد",
-                "💕 عيد حب سعيد! متنساش تحب شغلك كمان"
+            
+            sinaiLiberation: [
+                "🇪🇬 ذكرى تحرير سيناء! كل عام ومصر حرة أبية",
+                "🎖️ تحية لأبطال مصر! ذكرى عزيزة على قلوبنا"
+            ],
+            
+            revolution25: [
+                "🇪🇬 ذكرى ثورة 25 يناير! كل عام والشعب المصري بخير",
+                "✊ تحية للإرادة الشعبية! مصر دائماً في المقدمة"
+            ],
+            
+            policeDay: [
+                "👮‍♂️ عيد الشرطة المصرية! تحية لرجال الأمن الأبطال",
+                "🎖️ كل عام ورجال الشرطة بخير وعافية"
             ]
         };
 
-        // وظائف التحسينات الجديدة
-        
-        // عرض الرسالة الموسمية
-        function showSeasonalMessage() {
+        // تحديد نوع الرسالة حسب التاريخ والوقت
+        function getSeasonalMessageType() {
             const now = new Date();
             const month = now.getMonth() + 1; // 1-12
             const day = now.getDate();
+            const hour = now.getHours();
             
-            let messageType = null;
-            
-            // تحديد نوع الرسالة حسب التاريخ
-            if ((month === 12 && day >= 25) || (month === 1 && day <= 7)) {
-                messageType = 'newYear';
-            } else if (month === 6 || month === 7 || month === 8) {
-                messageType = 'summer';
-            } else if (month === 12 || month === 1 || month === 2) {
-                messageType = 'winter';
-            } else if (month === 2 && day === 14) {
-                messageType = 'valentine';
+            // التحقق من المناسبات الرسمية أولاً
+            if ((month === 12 && day >= 31) || (month === 1 && day <= 2)) {
+                return 'newYear';
             }
             
-            // عرض الرسالة إذا وجدت
+            // رمضان (تقريبي - يتغير كل سنة)
+            if (month === 3 || month === 4) {
+                return 'ramadan';
+            }
+            
+            // عيد الفطر (تقريبي)
+            if (month === 4 || month === 5) {
+                return 'eidFitr';
+            }
+            
+            // عيد الأضحى (تقريبي)
+            if (month === 7 || month === 8) {
+                return 'eidAdha';
+            }
+            
+            // المناسبات الوطنية المصرية
+            if (month === 1 && day === 25) {
+                return 'revolution25';
+            }
+            
+            if (month === 4 && day === 25) {
+                return 'sinaiLiberation';
+            }
+            
+            if (month === 7 && day === 23) {
+                return 'nationalDay';
+            }
+            
+            if (month === 1 && day === 25) {
+                return 'policeDay';
+            }
+            
+            // رسائل يومية حسب الوقت
+            if (hour >= 5 && hour < 12) {
+                return 'morning';
+            } else if (hour >= 12 && hour < 17) {
+                return 'afternoon';
+            } else {
+                return 'evening';
+            }
+        }
+
+        // وظائف التحسينات الجديدة
+        
+        // عرض الرسالة الموسمية (فقط بعد تسجيل الدخول)
+        function showSeasonalMessage() {
+            const messageType = getSeasonalMessageType();
+            
             if (messageType && seasonalMessages[messageType]) {
                 const messages = seasonalMessages[messageType];
                 const randomMessage = messages[Math.floor(Math.random() * messages.length)];
@@ -1591,10 +1651,10 @@
                 contentElement.textContent = randomMessage;
                 messageElement.classList.add('show');
                 
-                // إخفاء الرسالة تلقائياً بعد 5 ثوان
+                // إخفاء الرسالة تلقائياً بعد 4 ثوان
                 setTimeout(() => {
                     messageElement.classList.remove('show');
-                }, 5000);
+                }, 4000);
             }
         }
 
@@ -1612,18 +1672,16 @@
             // اختيار رسالة عشوائية
             const randomMessage = forgotPasswordMessages[Math.floor(Math.random() * forgotPasswordMessages.length)];
             
-            // تحديث محتوى النافذة
+            // تحديث محتوى النافذة مع عداد النسيان
             const messageElement = document.getElementById('forgotPasswordMessage');
             messageElement.innerHTML = `
                 <div style="font-size: 3rem; margin-bottom: 1rem;">${randomMessage.emoji}</div>
                 <div>${randomMessage.text}</div>
+                ${showForgetCounterInModal()}
             `;
             
             // عرض النافذة
             document.getElementById('forgotPasswordModal').classList.add('show');
-            
-            // تحديث عداد النسيان
-            updateForgetCounter();
         }
 
         // إغلاق نافذة نسيان كلمة المرور
@@ -1631,17 +1689,21 @@
             document.getElementById('forgotPasswordModal').classList.remove('show');
         }
 
-        // تحديث عداد النسيان
+        // تحديث عداد النسيان (يظهر فقط في النافذة المنبثقة)
         function updateForgetCounter() {
-            const counterElement = document.getElementById('forgetCounter');
-            
+            // لا نعرض العداد في شاشة الدخول، فقط في النافذة المنبثقة
+            return;
+        }
+
+        // عرض عداد النسيان في النافذة المنبثقة
+        function showForgetCounterInModal() {
             if (forgetPasswordCount > 0) {
                 let message = '';
                 
                 if (forgetPasswordCount === 1) {
-                    message = "🤔 أول مرة تنسى؟ عادي يحصل";
+                    message = "�‍ أول مرة تنسى؟ عادي يحصل";
                 } else if (forgetPasswordCount <= 3) {
-                    message = `😅 المرة رقم ${forgetPasswordCount}! الذاكرة محتاجة فيتامين!`;
+                    message = `�  المرة رقم ${forgetPasswordCount}! الذاكرة محتاجة فيتامين!`;
                 } else if (forgetPasswordCount <= 5) {
                     message = `🤦‍♂️ المرة دي رقم ${forgetPasswordCount}! إنت محتاج مفكرة`;
                 } else if (forgetPasswordCount <= 10) {
@@ -1650,17 +1712,52 @@
                     message = `🏆 مبروك! إنت وصلت لمستوى الخبير في النسيان (${forgetPasswordCount} مرة)`;
                 }
                 
-                counterElement.textContent = message;
-                counterElement.classList.remove('hidden');
+                return `<div style="margin-top: 1rem; padding: 0.5rem; background: rgba(255, 235, 59, 0.1); border: 1px solid rgba(255, 235, 59, 0.3); border-radius: 8px; font-size: 0.9rem; color: var(--neon-yellow);">${message}</div>`;
             }
+            return '';
         }
 
-        // إعادة تعيين كلمة المرور (وهمي حالياً)
+        // إعادة تعيين كلمة المرور
         function resetPassword() {
             closeForgotPasswordModal();
             
-            // عرض رسالة مؤقتة
-            showMessage('🔧 ميزة إعادة تعيين كلمة المرور قيد التطوير! تواصل مع المدير.', 'info');
+            // عرض نافذة إعادة تعيين كلمة المرور
+            const resetModal = document.createElement('div');
+            resetModal.className = 'modal-overlay show';
+            resetModal.innerHTML = `
+                <div class="modal-content">
+                    <h2 class="modal-title">🔐 إعادة تعيين كلمة المرور</h2>
+                    <div class="modal-message">
+                        <p>لإعادة تعيين كلمة المرور، يرجى التواصل مع المدير:</p>
+                        <div style="background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.3); border-radius: 8px; padding: 1rem; margin: 1rem 0;">
+                            <p><strong>📧 البريد الإلكتروني:</strong> admin@company.com</p>
+                            <p><strong>📱 الهاتف:</strong> 01234567890</p>
+                            <p><strong>💬 الواتساب:</strong> 01234567890</p>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--primary-200);">أو يمكنك استخدام الحسابات التجريبية المتاحة</p>
+                    </div>
+                    <div class="modal-buttons">
+                        <button class="modal-btn primary" onclick="closeResetModal()">فهمت، شكراً 👍</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(resetModal);
+            
+            // إزالة النافذة عند الضغط خارجها
+            resetModal.addEventListener('click', function(e) {
+                if (e.target === resetModal) {
+                    closeResetModal();
+                }
+            });
+        }
+
+        // إغلاق نافذة إعادة تعيين كلمة المرور
+        function closeResetModal() {
+            const resetModal = document.querySelector('.modal-overlay:last-child');
+            if (resetModal) {
+                resetModal.remove();
+            }
         }
 
         // حفظ واستعادة بيانات الدخول
@@ -1690,8 +1787,7 @@
                 document.getElementById('rememberMe').checked = true;
             }
             
-            // تحديث عداد النسيان
-            updateForgetCounter();
+            // لا نعرض عداد النسيان في شاشة الدخول
         }
         let saturdayShifts = [];
         let currentAttendance = []; // الحاضرين حالياً
@@ -2190,10 +2286,6 @@
                 // تحميل بيانات الدخول المحفوظة
                 loadSavedLoginData();
                 console.log('✅ Saved login data loaded');
-                
-                // عرض الرسالة الموسمية
-                showSeasonalMessage();
-                console.log('✅ Seasonal message displayed');
                 
                 // إعداد الأحداث
                 setupEvents();
@@ -5048,6 +5140,11 @@
                 setTimeout(() => {
                     showMainScreen();
                     loadData();
+                    
+                    // عرض الرسالة الموسمية بعد تسجيل الدخول
+                    setTimeout(() => {
+                        showSeasonalMessage();
+                    }, 1000);
                 }, 1000);
                 
             } catch (error) {
